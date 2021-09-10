@@ -91,4 +91,3 @@ alias -g C='| pbcopy'
 # ###### #
 
 source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-
