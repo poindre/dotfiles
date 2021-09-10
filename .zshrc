@@ -1,3 +1,7 @@
+if [[ -r "${$HOME}/.dotfiles/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${$HOME}/.dotfiles/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 export PATH=XDG_CONFIG_HOME=$HOME/.config:$PATH
 export DOCKER_CONTENT_TRUST=0
 
@@ -91,3 +95,6 @@ alias -g C='| pbcopy'
 # ###### #
 
 source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+
+# To customize prompt, run `p10k configure` or edit ~/.zsh/.p10k.zsh.
+[[ ! -f ~/.zsh/.p10k.zsh ]] || source ~/.zsh/.p10k.zsh
