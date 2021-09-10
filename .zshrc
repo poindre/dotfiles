@@ -1,5 +1,5 @@
-if [[ -r "${$HOME}/.dotfiles/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${$HOME}/.dotfiles/p10k-instant-prompt-${(%):-%n}.zsh"
+if [[ -r "${HOME}/.dotfiles/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${HOME}/.dotfiles/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 export PATH=XDG_CONFIG_HOME=$HOME/.config:$PATH
