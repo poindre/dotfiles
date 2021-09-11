@@ -1,9 +1,16 @@
 export PATH=XDG_CONFIG_HOME=$HOME/.config:$PATH
 export DOCKER_CONTENT_TRUST=0
 
-# ############### #
+# ---------------------- #
+# powerlevel10k Settings #
+# ---------------------- #
+if [[ -r "${HOME}/.dotfiles/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${HOME}/.dotfiles/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# --------------- #
 # ZSHELL Settings #
-# ############### #
+# --------------- #
 
 # 補完
 # 補完機能を有効化
@@ -19,9 +26,9 @@ zstyle ':completion:*' ignore-parents parent pwd ..
 # cdコマンド補完の見出し文
 zstyle ':completion:*:descriptions' format '%BCompleting%b %U%d%u'
 
-# ############## #
+# -------------- #
 # ZSHELL Options #
-# ############## #
+# -------------- #
 
 # 日本語ファイル名を表示可能にする
 setopt print_eight_bit
@@ -63,16 +70,21 @@ setopt hist_reduce_blanks
 # 高機能なワイルドカード展開を使用する
 setopt extended_glob
 
-# ############### #
+# --------------- #
 # ZSHELL KeyBinds #
-# ############### #
+# --------------- #
 
 # ^R で履歴検索をするときに * でワイルドカードを使用出来るようにする
 bindkey '^R' history-incremental-pattern-search-backward
 
-# ########## #
+# ---------- #
 # エイリアス #
-# ########## #
+# ---------- #
+
+# alias vim='nvim $(fzf)'
+alias vim='nvim'
+alias g='git'
+alias sed='gsed'
 
 # alias rm='rm -i'
 # alias cp='cp -i'
@@ -86,8 +98,11 @@ bindkey '^R' history-incremental-pattern-search-backward
 # C で標準出力をクリップボードにコピーする
 alias -g C='| pbcopy'
 
-# ###### #
+# ------ #
 # prezto #
-# ###### #
+# ------ #
 
 source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+
+# To customize prompt, run `p10k configure` or edit ~/.zsh/.p10k.zsh.
+[[ ! -f ~/.zsh/.p10k.zsh ]] || source ~/.zsh/.p10k.zsh
