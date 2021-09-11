@@ -12,8 +12,8 @@ runtime nvim_init/base.init.vim
 " autocmd ColorScheme * highlight GitGutterChangeDelete ctermfg=yellow
 
 let s:dein_dir = expand('~/.cache/dein')
-let s:toml_file = "${ZDOTDIR}/dein/dein.toml"
-let s:lazy_toml_file = "${ZDOTDIR}/dein/dein_lazy.toml"
+let s:toml_file = "${DOTDIR}/dein/dein.toml"
+let s:lazy_toml_file = "${DOTDIR}/dein/dein_lazy.toml"
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 
 " 初回のみgit clone

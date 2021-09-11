@@ -102,7 +102,7 @@ alias -g C='| pbcopy'
 # prezto #
 # ------ #
 
-source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+source "${$HOME}/.zsh/.zprezto/init.zsh"
 
 # To customize prompt, run `p10k configure` or edit ~/.zsh/.p10k.zsh.
 [[ ! -f ~/.zsh/.p10k.zsh ]] || source ~/.zsh/.p10k.zsh
