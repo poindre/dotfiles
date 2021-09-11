@@ -77,7 +77,7 @@ bindkey '^R' history-incremental-pattern-search-backward
 # ------ #
 # prezto #
 # ------ #
-source "${ZHOMEDIR}/.zprezto/init.zsh"
+source "${ZDOTDIR}/.zprezto/init.zsh"
 
 # To customize prompt, run `p10k configure` or edit ~/.zsh/.p10k.zsh.
-[[ ! -f ${ZHOMEDIR}/.p10k.zsh ]] || source ${ZHOMEDIR}/.p10k.zsh
+[[ ! -f ${ZDOTDIR}/.p10k.zsh ]] || source ${ZDOTDIR}/.p10k.zsh
