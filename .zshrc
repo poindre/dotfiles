@@ -82,9 +82,9 @@ bindkey '^R' history-incremental-pattern-search-backward
 # ---------- #
 
 # alias vim='nvim $(fzf)'
-alias vim='nvim'
-alias g='git'
-alias sed='gsed'
+# alias vim='nvim'
+# alias g='git'
+# alias sed='gsed'
 
 # alias rm='rm -i'
 # alias cp='cp -i'
