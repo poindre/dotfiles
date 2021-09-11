@@ -4,14 +4,13 @@ export DOCKER_CONTENT_TRUST=0
 # ---------------------- #
 # powerlevel10k Settings #
 # ---------------------- #
-if [[ -r "${HOME}/.dotfiles/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${HOME}/.dotfiles/p10k-instant-prompt-${(%):-%n}.zsh"
+if [[ -r "${DOTDIR}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${DOTDIR}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
 # --------------- #
 # ZSHELL Settings #
 # --------------- #
-
 # 補完
 # 補完機能を有効化
 autoload -U compinit
@@ -29,7 +28,6 @@ zstyle ':completion:*:descriptions' format '%BCompleting%b %U%d%u'
 # -------------- #
 # ZSHELL Options #
 # -------------- #
-
 # 日本語ファイル名を表示可能にする
 setopt print_eight_bit
 
@@ -73,36 +71,13 @@ setopt extended_glob
 # --------------- #
 # ZSHELL KeyBinds #
 # --------------- #
-
 # ^R で履歴検索をするときに * でワイルドカードを使用出来るようにする
 bindkey '^R' history-incremental-pattern-search-backward
-
-# ---------- #
-# エイリアス #
-# ---------- #
-
-# alias vim='nvim $(fzf)'
-# alias vim='nvim'
-# alias g='git'
-# alias sed='gsed'
-
-# alias rm='rm -i'
-# alias cp='cp -i'
-# alias mv='mv -i'
-# alias mkdir='mkdir -p'
-# 
-# alias node="nocorrect node"
-# alias npm="nocorrect npm"
-# alias composer="nocorrect composer"
-
-# C で標準出力をクリップボードにコピーする
-alias -g C='| pbcopy'
 
 # ------ #
 # prezto #
 # ------ #
-
-source "${$HOME}/.zsh/.zprezto/init.zsh"
+source "${ZHOMEDIR}/.zprezto/init.zsh"
 
 # To customize prompt, run `p10k configure` or edit ~/.zsh/.p10k.zsh.
-[[ ! -f ~/.zsh/.p10k.zsh ]] || source ~/.zsh/.p10k.zsh
+[[ ! -f ${ZHOMEDIR}/.p10k.zsh ]] || source ${ZHOMEDIR}/.p10k.zsh
