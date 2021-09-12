@@ -3,7 +3,6 @@ export DOCKER_CONTENT_TRUST=0
 
 # Anyenv
 export PATH=$HOME/.anyenv/bin:$PATH
-eval "${HOME}/.anyenv/bin/anyenv init"
 
 # ---------------------- #
 # powerlevel10k Settings #
@@ -82,6 +81,8 @@ bindkey '^R' history-incremental-pattern-search-backward
 # prezto #
 # ------ #
 source "${ZDOTDIR}/.zprezto/init.zsh"
+
+eval "$(anyenv init -)"
 
 # To customize prompt, run `p10k configure` or edit ~/.zsh/.p10k.zsh.
 [[ ! -f ${ZDOTDIR}/.p10k.zsh ]] || source ${ZDOTDIR}/.p10k.zsh
