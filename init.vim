@@ -34,8 +34,9 @@ if dein#load_state(s:dein_dir)
   call dein#begin(s:dein_dir)
 
   call dein#load_toml(s:dein_plugin_dir . '/dein/dein.toml', {'lazy': 0})
-  call dein#load_toml(s:dein_plugin_dir . '/vim-polyglot/dein.toml', {'lazy': 0})
   call dein#load_toml(s:dein_plugin_dir . '/vim-hybrid/dein.toml', {'lazy': 0})
+  call dein#load_toml(s:dein_plugin_dir . '/vim-polyglot/dein.toml', {'lazy': 0})
+  call dein#load_toml(s:dein_plugin_dir . '/coc/dein.toml', {'lazy': 0})
   call dein#load_toml(s:lazy_toml_file, {'lazy': 1})
 
   call dein#end()

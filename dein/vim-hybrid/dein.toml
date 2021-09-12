@@ -1,5 +1,3 @@
-# カラースキーマ
-
 [[plugins]]
 repo = 'w0ng/vim-hybrid'
 hook_add = '''
