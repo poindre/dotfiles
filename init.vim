@@ -3,7 +3,15 @@ scriptencoding utf-8
 syntax on
 filetype plugin indent on
 
-runtime nvim_init/base.init.vim
+function! s:source_init_vim(file_name)
+    let init_file = expand($HOME . '/.dotfiles/nvim_init/' . a:file_name)
+    if filereadable(init_file)
+        execute 'source' init_file
+    endif
+endfunction
+
+call s:source_init_vim('base.init.vim')
+call s:source_init_vim('filetype.init.vim')
 
 " autocmd ColorScheme * highlight lspReference ctermfg=234 ctermbg=110
 " autocmd ColorScheme * highlight GitGutterAdd ctermfg=green
@@ -11,9 +19,9 @@ runtime nvim_init/base.init.vim
 " autocmd ColorScheme * highlight GitGutterDelete ctermfg=red
 " autocmd ColorScheme * highlight GitGutterChangeDelete ctermfg=yellow
 
-let s:dein_dir = expand('~/.cache/dein')
-let s:toml_file = "${DOTDIR}/dein/dein.toml"
-let s:lazy_toml_file = "${DOTDIR}/dein/dein_lazy.toml"
+let s:dein_dir = expand($HOME . '/.cache/dein')
+let s:dein_plugin_dir = $HOME . '/.dotfiles/dein'
+let s:lazy_toml_file = $HOME . '/.dotfiles/dein/dein_lazy.toml'
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 
 " 初回のみgit clone
@@ -25,7 +33,9 @@ execute 'set runtimepath^=' . s:dein_repo_dir
 if dein#load_state(s:dein_dir)
   call dein#begin(s:dein_dir)
 
-  call dein#load_toml(s:toml_file, {'lazy': 0})
+  call dein#load_toml(s:dein_plugin_dir . '/dein/dein.toml', {'lazy': 0})
+  call dein#load_toml(s:dein_plugin_dir . '/vim-polyglot/dein.toml', {'lazy': 0})
+  call dein#load_toml(s:dein_plugin_dir . '/vim-hybrid/dein.toml', {'lazy': 0})
   call dein#load_toml(s:lazy_toml_file, {'lazy': 1})
 
   call dein#end()

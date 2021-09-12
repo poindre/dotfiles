@@ -1,0 +1,8 @@
+# カラースキーマ
+
+[[plugins]]
+repo = 'w0ng/vim-hybrid'
+hook_add = '''
+  set background=dark
+  au VimEnter * nested colorscheme hybrid
+'''
