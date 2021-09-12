@@ -3,7 +3,7 @@ export DOCKER_CONTENT_TRUST=0
 
 # Anyenv
 export PATH=$HOME/.anyenv/bin:$PATH
-eval "${HOME}/.anyenv/bin/anyenv init"
+eval "$(anyenv init -)"
 
 # ---------------------- #
 # powerlevel10k Settings #
