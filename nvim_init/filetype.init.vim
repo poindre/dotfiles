@@ -1,5 +1,5 @@
 autocmd BufRead,BufNewFile *.php       setfiletype php
-autocmd BufRead,BufNewFile *.blade.php setfiletype php
+autocmd BufNewFile,BufRead *.blade.php setfiletype blade
 autocmd BufRead,BufNewFile *.ejs       setfiletype html
 autocmd BufRead,BufNewFile *.html      setfiletype html
 autocmd BufRead,BufNewFile *.js        setfiletype javascript
