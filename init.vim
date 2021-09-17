@@ -12,12 +12,7 @@ endfunction
 
 call s:source_init_vim('base.init.vim')
 call s:source_init_vim('filetype.init.vim')
-
-" autocmd ColorScheme * highlight lspReference ctermfg=234 ctermbg=110
-" autocmd ColorScheme * highlight GitGutterAdd ctermfg=green
-" autocmd ColorScheme * highlight GitGutterChange ctermfg=yellow
-" autocmd ColorScheme * highlight GitGutterDelete ctermfg=red
-" autocmd ColorScheme * highlight GitGutterChangeDelete ctermfg=yellow
+call s:source_init_vim('lsp.init.vim')
 
 let s:dein_dir = expand($HOME . '/.cache/dein')
 let s:dein_plugin_dir = $HOME . '/.dotfiles/dein'
