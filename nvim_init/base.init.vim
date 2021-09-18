@@ -49,6 +49,6 @@ source $VIMRUNTIME/macros/matchit.vim
 
 " set pass for neovim
 let g:python_host_prog='~/.anyenv/envs/pyenv/versions/2.7.17/bin/python2'
-let g:python3_host_prog='~/.anyenv/envs/pyenv/versions/3.8.12/bin/python3'
+let g:python3_host_prog='~/.anyenv/envs/pyenv/versions/3.9.7/bin/python3'
 let g:ruby_host_prog='~/.anyenv/envs/rbenv/versions/3.0.2/bin/ruby'
 

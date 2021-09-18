@@ -4,10 +4,10 @@ syntax on
 filetype plugin indent on
 
 function! s:source_init_vim(file_name)
-    let init_file = expand($HOME . '/.dotfiles/nvim_init/' . a:file_name)
-    if filereadable(init_file)
-        execute 'source' init_file
-    endif
+  let init_file = expand($HOME . '/.dotfiles/nvim_init/' . a:file_name)
+  if filereadable(init_file)
+    execute 'source' init_file
+  endif
 endfunction
 
 call s:source_init_vim('base.init.vim')
@@ -32,6 +32,11 @@ if dein#load_state(s:dein_dir)
   call dein#load_toml(s:dein_plugin_dir . '/vim-hybrid/dein.toml', {'lazy': 0})
   call dein#load_toml(s:dein_plugin_dir . '/vim-polyglot/dein.toml', {'lazy': 0})
   call dein#load_toml(s:dein_plugin_dir . '/coc/dein.toml', {'lazy': 0})
+
+  call dein#load_toml(s:dein_plugin_dir . '/lightline/dein.toml', {'lazy': 0})
+  call dein#load_toml(s:dein_plugin_dir . '/fzf/dein.toml', {'lazy': 0})
+
+  call dein#load_toml(s:dein_plugin_dir . '/markup/dein.toml', {'lazy': 0})
   call dein#load_toml(s:lazy_toml_file, {'lazy': 1})
 
   call dein#end()

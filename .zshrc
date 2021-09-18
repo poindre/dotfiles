@@ -1,9 +1,3 @@
-export PATH=XDG_CONFIG_HOME=$HOME/.config:$PATH
-export DOCKER_CONTENT_TRUST=0
-
-# Anyenv
-export PATH=$HOME/.anyenv/bin:$PATH
-
 # ---------------------- #
 # powerlevel10k Settings #
 # ---------------------- #

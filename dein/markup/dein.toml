@@ -1,0 +1,24 @@
+[[plugins]]
+repo = 'mattn/emmet-vim'
+
+[[plugins]]
+repo = 'alvan/vim-closetag'
+on_ft = ['html', 'xhtml', 'javascript', 'typescript', 'javascript.jsx', 'typescript.tsx', 'php']
+hook_add = '''
+  let g:closetag_filenames='*.html,*.php,*.tsx,*.jsx,*.vue'
+  let g:closetag_xhtml_filenames='*.html'
+  let g:closetag_filetypes='html, php, typescriptreact'
+  let g:closetag_xhtml_filetypes='html'
+  let g:closetag_emptyTags_caseSensitive=1
+  let g:closetag_shortcut='>'
+  let g:closetag_close_shortcut = '<leader>>'
+'''
+
+[[plugins]]
+repo = 'tomtom/tcomment_vim'
+hook_add = '''
+  vnoremap ? :'<,'>TComment<CR>
+'''
+
+[[plugins]] # editorconfig
+repo = 'editorconfig/editorconfig-vim'

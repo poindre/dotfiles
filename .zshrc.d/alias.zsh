@@ -1,4 +1,4 @@
-alias vim='nvim'
+alias vim='nvim $(fzf)'
 alias g='git'
 alias sed='gsed'
 
