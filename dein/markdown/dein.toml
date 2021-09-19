@@ -3,6 +3,14 @@ repo = 'tpope/vim-markdown'
 
 [[plugins]]
 repo = 'kannokanno/previm'
+hook_add = '''
+" Ctrl-pでプレビュー
+nnoremap <silent> <C-p> :PrevimOpen<CR>
+
+" 自動で折りたたまないようにする
+let g:vim_markdown_folding_disabled=1
+let g:previm_enable_realtime = 1
+'''
 
 [[plugins]]
 repo = 'tyru/open-browser.vim'

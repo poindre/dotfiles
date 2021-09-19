@@ -16,7 +16,9 @@ endfunction
 
 call s:source_init_vim('filetype.init.vim')
 call s:source_init_vim('base.init.vim')
+call s:source_init_vim('keymaps.init.vim')
 call s:source_init_vim('lsp.init.vim')
+call s:source_init_vim('tabs.init.vim')
 
 let s:dein_dir = expand($HOME . '/.cache/dein')
 let s:dein_plugin_dir = $HOME . '/.dotfiles/dein'
@@ -54,6 +56,3 @@ endif
 if dein#check_install()
   call dein#install()
 endif
-
-" set background=dark
-colorscheme solarized

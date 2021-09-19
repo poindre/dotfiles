@@ -10,5 +10,13 @@ autocmd BufRead,BufNewFile *.scss      setfiletype scss
 autocmd BufRead,BufNewFile *.pcss      setfiletype scss
 autocmd BufRead,BufNewFile *.java      setfiletype java
 autocmd BufRead,BufNewFile *.sh        setfiletype sh
+autocmd BufRead,BufNewFile *.mkd       setfiletype markdown
+autocmd BufRead,BufNewFile *.md        setfiletype markdown
 
 autocmd Filetype json setl conceallevel=0
+
+" cssはハイフンも単語とする
+augroup VimCSS3Syntax
+  autocmd!
+  autocmd FileType css,scss,pcss setlocal iskeyword+=-
+augroup END

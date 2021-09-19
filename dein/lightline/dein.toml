@@ -1,8 +1,8 @@
-[[plugins]] # lightline
+[[plugins]]
 repo = 'itchyny/lightline.vim'
 hook_add = '''
   let g:lightline = {
-  \   'colorscheme': 'jellybeans',
+  \   'colorscheme': 'nightowl',
   \   'component': {
   \     'readonly': '%{&readonly?"⭤":""}',
   \   },

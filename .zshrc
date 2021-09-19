@@ -1,3 +1,6 @@
+set termguicolors
+export TERM=xterm-color256
+
 # ---------------------- #
 # powerlevel10k Settings #
 # ---------------------- #
@@ -85,4 +88,4 @@ eval "$(anyenv init -)"
 # coc Setting #
 # ----------- #
 # add @ to iskeyword option.
-autocmd FileType scss setl iskeyword+=@-@
+# autocmd FileType scss setl iskeyword+=@-@
