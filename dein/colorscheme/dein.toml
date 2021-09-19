@@ -1,0 +1,6 @@
+[[plugins]]
+repo = 'altercation/vim-colors-solarized'
+hook_add = '''
+  set background=dark
+  au VimEnter * nested colorscheme solarized
+'''

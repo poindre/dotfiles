@@ -1,0 +1,10 @@
+[[plugins]]
+repo = 'airblade/vim-gitgutter'
+hook_add = '''
+  set signcolumn=yes
+  let g:gitgutter_async = 1
+  let g:gitgutter_sign_modified = 'm'
+'''
+
+[[plugins]]
+repo = 'tpope/vim-fugitive'
