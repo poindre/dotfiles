@@ -1,4 +1,4 @@
 .DS_*
 
-.zshrc.d/environment.zsh
+.zshrc.d/local_path.zsh
 .zcompdump
