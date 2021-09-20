@@ -4,6 +4,14 @@ hook_add = '''
   set signcolumn=yes
   let g:gitgutter_async = 1
   let g:gitgutter_sign_modified = 'm'
+
+  nnoremap gp :GitGutterPreviewHunk<CR>
+
+  highlight GitGutterAdd ctermfg=green
+  highlight GitGutterChange ctermfg=blue
+  highlight GitGutterDelete ctermfg=red
+
+  set updatetime=2000
 '''
 
 [[plugins]]

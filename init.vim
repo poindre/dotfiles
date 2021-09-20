@@ -25,7 +25,6 @@ let s:dein_plugin_dir = $HOME . '/.dotfiles/dein'
 let s:lazy_toml_file = $HOME . '/.dotfiles/dein/dein_lazy.toml'
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 
-" 初回のみgit clone
 if !isdirectory(s:dein_repo_dir)
   execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
 endif
@@ -40,6 +39,7 @@ if dein#load_state(s:dein_dir)
   call dein#load_toml(s:dein_plugin_dir . '/coc/dein.toml', {'lazy': 0})
 
   call dein#load_toml(s:dein_plugin_dir . '/lightline/dein.toml', {'lazy': 0})
+  call dein#load_toml(s:dein_plugin_dir . '/filer/dein.toml', {'lazy': 0})
   call dein#load_toml(s:dein_plugin_dir . '/fzf/dein.toml', {'lazy': 0})
 
   call dein#load_toml(s:dein_plugin_dir . '/markup/dein.toml', {'lazy': 0})
