@@ -1,5 +1,4 @@
 set termguicolors
-export TERM=xterm-color256
 
 # ---------------------- #
 # powerlevel10k Settings #

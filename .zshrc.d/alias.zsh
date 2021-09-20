@@ -1,5 +1,4 @@
 alias vim='nvim $(fzf)'
-alias g='git'
 alias sed='gsed'
 
 alias rm='rm -i'
@@ -14,3 +13,10 @@ alias composer="nocorrect composer"
 # C で標準出力をクリップボードにコピーする
 alias -g C='| pbcopy'
 
+# Git
+alias g='git'
+alias gpl='git pull'
+alias gps='git push'
+alias gst='git status'
+alias gad='git add -A'
+alias gdf='git diff --word-diff'
