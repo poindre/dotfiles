@@ -19,6 +19,7 @@ call s:source_init_vim('base.init.vim')
 call s:source_init_vim('keymaps.init.vim')
 call s:source_init_vim('lsp.init.vim')
 call s:source_init_vim('tabs.init.vim')
+call s:source_init_vim('coc.init.vim')
 
 let s:dein_dir = expand($HOME . '/.cache/dein')
 let s:dein_plugin_dir = $HOME . '/.dotfiles/dein'

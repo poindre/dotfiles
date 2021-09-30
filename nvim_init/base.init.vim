@@ -21,6 +21,7 @@ set backspace=2
 set shellslash
 set clipboard=unnamedplus
 set nrformats=
+set completeopt=menuone,noinsert
 
 " floating windowの透過
 " ---------------------

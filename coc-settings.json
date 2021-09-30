@@ -1,4 +1,6 @@
 {
+  "suggest.keepCompleteopt": true,
+  "eslint.autoFixOnSave": true,
   "eslint.packageManager": "yarn",
   "eslint.nodePath": ".yarn/sdks",
   "workspace.workspaceFolderCheckCwd": false,
