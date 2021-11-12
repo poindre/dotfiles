@@ -18,12 +18,18 @@ nnoremap sK <C-w>K
 nnoremap sL <C-w>L
 nnoremap sH <C-w>H
 
+" Move cursor on Display line
+nnoremap j gj
+nnoremap k gk
+nnoremap <down> gj
+nnoremap <up> gk
+
 " toggle search highlight
 nnoremap <silent><Esc><Esc> :<C-u>set nohlsearch!<CR>
 
 " add empty line
-nnoremap <Leader>j o<ESC>k
-nnoremap <Leader>k O<ESC>j
+nnoremap <Leader>jj o<ESC>k
+nnoremap <Leader>kk O<ESC>j
 
 " save shortcut
 nnoremap <Leader>w :w<CR>
