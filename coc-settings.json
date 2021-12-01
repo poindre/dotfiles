@@ -5,5 +5,5 @@
   "eslint.nodePath": ".yarn/sdks",
   "workspace.workspaceFolderCheckCwd": false,
   "tsserver.tsdk": ".yarn/sdks/typescript/lib",
-  "coc.preferences.formatOnSaveFiletypes": ["javascript", "typescript", "scss", "css"]
+  "coc.preferences.formatOnSaveFiletypes": ["javascript", "typescript", "typescriptreact", "scss", "css"]
 }
