@@ -23,7 +23,7 @@ call s:source_init_vim('coc.init.vim')
 
 let s:dein_dir = expand($HOME . '/.cache/dein')
 let s:dein_plugin_dir = $HOME . '/.dotfiles/dein'
-let s:lazy_toml_file = $HOME . '/.dotfiles/dein/dein_lazy.toml'
+let s:lazy_toml_file = s:dein_plugin_dir . '/dein_lazy.toml'
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 
 if !isdirectory(s:dein_repo_dir)
