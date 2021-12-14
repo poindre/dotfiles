@@ -2,9 +2,6 @@
   "suggest.keepCompleteopt": true,
   "eslint.autoFixOnSave": true,
   "eslint.packageManager": "yarn",
-  "eslint.nodePath": ".yarn/sdks",
-  "workspace.workspaceFolderCheckCwd": false,
-  "tsserver.tsdk": ".yarn/sdks/typescript/lib",
   "coc.preferences.formatOnSaveFiletypes": ["javascript", "typescript", "typescriptreact", "scss", "css"],
   "prettier.onlyUseLocalVersion": true
 }
