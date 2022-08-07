@@ -1,7 +1,26 @@
 {
+  "typescript.format.enabled": false,
   "suggest.keepCompleteopt": true,
+  "suggest.triggerAfterInsertEnter": true,
+  "suggest.noselect": false,
+  "suggest.minTriggerInputLength": 2,
+  "suggest.acceptSuggestionOnCommitCharacter": true,
+  "suggest.snippetIndicator": " ►",
+  "suggest.enablePreview": true,
   "eslint.autoFixOnSave": true,
   "eslint.packageManager": "yarn",
+  "coc.preferences.formatOnType": true,
   "coc.preferences.formatOnSaveFiletypes": ["javascript", "typescript", "typescriptreact", "scss", "css"],
-  "prettier.onlyUseLocalVersion": true
+  "prettier.onlyUseLocalVersion": true,
+  "cSpell.enabled": true,
+  "cSpell.ignoreWords": ["chakra"],
+  "cSpell.enabledLanguageIds": [
+      "javascript",
+      "javascriptreact",
+      "markdown",
+      "php",
+      "typescript",
+      "typescriptreact",
+      "yml"
+  ]
 }
