@@ -678,7 +678,7 @@ vim.keymap.set('n', '<Leader>jj', 'o<ESC>k', { desc = 'Add Empty line: at bottom
 vim.keymap.set('n', '<Leader>kk', 'O<ESC>j', { desc = 'Add Empty line: at top' })
 
 -- Save Shortcut
-vim.keymap.set('n', '<Leader>w', ':w<CR>', { desc = 'Save Shortcut' })
+vim.keymap.set('n', '<C-s>', ':w<CR>', { desc = 'Save Shortcut' })
 
 -- diffview mappings
 vim.keymap.set('n', 'df', ':DiffviewOpen', { desc = 'Diffview Open: diff current' })
