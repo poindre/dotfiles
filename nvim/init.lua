@@ -92,6 +92,68 @@ require('lazy').setup({
   },
 
   {
+    -- plugins/null-ls.lua
+    'jose-elias-alvarez/null-ls.nvim',
+    config = function()
+      local null_ls = require('null-ls')
+
+      local group = vim.api.nvim_create_augroup('lsp_format_on_save', { clear = false })
+      local event = { 'BufWritePre', 'BufWritePost' }
+      local async = event == 'BufWritePost'
+
+      null_ls.setup({
+        on_attach = function(client, bufnr)
+          if client.supports_method('textDocument/formatting') then
+            vim.keymap.set('n', '<Leader>f', function()
+              vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+            end, { buffer = bufnr, desc = '[lsp] format' })
+
+            -- format on save
+            vim.api.nvim_clear_autocmds({ buffer = bufnr, group = group })
+            vim.api.nvim_create_autocmd(event, {
+              buffer = bufnr,
+              group = group,
+              callback = function()
+                vim.lsp.buf.format({ bufnr = bufnr, async = async })
+              end,
+              desc = '[lsp] format on save',
+            })
+          end
+
+          if client.supports_method('textDocument/rangeFormatting') then
+            vim.keymap.set('x', '<Leader>f', function()
+              vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+            end, { buffer = bufnr, desc = '[lsp] format' })
+          end
+        end,
+      })
+    end
+  },
+
+  {
+    -- prettier.nvim
+    'MunifTanjim/prettier.nvim',
+    setup = {
+      bin = 'prettier',
+      filetypes = {
+        'css',
+        'graphql',
+        'html',
+        'javascript',
+        'javascriptreact',
+        'json',
+        'less',
+        'markdown',
+        'scss',
+        'typescript',
+        'typescriptreact',
+        'yaml',
+        'lua',
+      },
+    }
+  },
+
+  {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
     dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
@@ -173,15 +235,15 @@ require('lazy').setup({
     dependencies = {
       'nvim-treesitter/nvim-treesitter-textobjects',
     },
-    build = ":TSUpdate",
+    build = ':TSUpdate',
   },
 
   {
     -- filer
     'nvim-tree/nvim-tree.lua',
-    -- dependencies = {
-    --   'nvim-tree/nvim-web-devicons',
-    -- },
+    dependencies = {
+      'nvim-tree/nvim-web-devicons',
+    },
     config = function()
       local function tree_on_attach(bufnr)
         local api = require('nvim-tree.api')
@@ -203,15 +265,6 @@ require('lazy').setup({
         filters = {
           dotfiles = true,
         },
-        renderer = {
-          icons = {
-            show = {
-              file = false,
-              folder = false,
-              folder_arrow = false,
-            }
-          }
-        }
       })
     end
   },
@@ -436,10 +489,10 @@ require('nvim-treesitter.configs').setup {
 }
 
 -- Diagnostic keymaps
-vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
-vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
-vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
-vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
+vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous diagnostic message' })
+vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
+vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
+vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 
 -- LSP settings.
 --  This function gets run when an LSP connects to a particular buffer.
@@ -479,12 +532,21 @@ local on_attach = function(_, bufnr)
   nmap('<leader>wl', function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, '[W]orkspace [L]ist Folders')
-
-  -- Create a command `:Format` local to the LSP buffer
-  vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
-    vim.lsp.buf.format()
-  end, { desc = 'Format current buffer with LSP' })
 end
+
+require('prettier').setup({
+  ['null-ls'] = {
+    condition = function()
+      return require('prettier').config_exists({
+        check_package_json = true,
+      })
+    end,
+    runtime_condition = function(params)
+      return true
+    end,
+    timeout = 5000,
+  },
+})
 
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -580,10 +642,6 @@ cmp.setup {
     { name = 'luasnip' },
   },
 }
-
--- save on format
-vim.cmd [[autocmd BufWritePre <buffer> lua vim.lsp.buf.format()]]
-vim.cmd [[autocmd BufWritePre * lua vim.lsp.buf.format()]]
 
 -- nvim-tree mappings
 vim.g.loaded_netrw = 1
