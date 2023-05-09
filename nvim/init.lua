@@ -133,24 +133,6 @@ require('lazy').setup({
   {
     -- prettier.nvim
     'MunifTanjim/prettier.nvim',
-    setup = {
-      bin = 'prettier',
-      filetypes = {
-        'css',
-        'graphql',
-        'html',
-        'javascript',
-        'javascriptreact',
-        'json',
-        'less',
-        'markdown',
-        'scss',
-        'typescript',
-        'typescriptreact',
-        'yaml',
-        'lua',
-      },
-    }
   },
 
   {
@@ -545,6 +527,22 @@ require('prettier').setup({
       return true
     end,
     timeout = 5000,
+  },
+  bin = 'prettier',
+  filetypes = {
+    'css',
+    'graphql',
+    'html',
+    'javascript',
+    'javascriptreact',
+    'json',
+    'less',
+    'markdown',
+    'scss',
+    'typescript',
+    'typescriptreact',
+    'yaml',
+    'lua',
   },
 })
 
