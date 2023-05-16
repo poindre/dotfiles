@@ -263,6 +263,14 @@ require('lazy').setup({
   },
 
   {
+    -- nvim-ts-autotag
+    'windwp/nvim-ts-autotag',
+    config = function()
+      require('nvim-ts-autotag').setup()
+    end
+  },
+
+  {
     -- Highlight current word
     'RRethy/vim-illuminate',
     config = function()
@@ -470,6 +478,9 @@ require('nvim-treesitter.configs').setup {
         ['<leader>A'] = '@parameter.inner',
       },
     },
+  },
+  autotag = {
+    enable = true,
   },
 }
 
