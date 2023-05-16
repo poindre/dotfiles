@@ -102,6 +102,9 @@ require('lazy').setup({
       local async = event == 'BufWritePost'
 
       null_ls.setup({
+        sources = {
+          null_ls.builtins.formatting.prettier_eslint,
+        },
         on_attach = function(client, bufnr)
           if client.supports_method('textDocument/formatting') then
             vim.keymap.set('n', '<Leader>f', function()
@@ -245,8 +248,8 @@ require('lazy').setup({
         sort_by = 'case_sensitive',
         on_attach = tree_on_attach,
         filters = {
-          dotfiles = true,
-        },
+          custom = {'.DS_Store'}
+        }
       })
     end
   },
