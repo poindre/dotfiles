@@ -103,11 +103,15 @@ require('lazy').setup({
 
       null_ls.setup({
         sources = {
-          null_ls.builtins.formatting.prettier_eslint,
-          null_ls.builtins.formatting.prettier,
-          null_ls.builtins.formatting.prettierd,
-          null_ls.builtins.diagnostics.eslint,
+          -- eslint は重いので Mason の LSP 版を使用
+          -- null_ls.builtins.diagnostics.eslint.with({
+          --   prefer_local = "node_modules/.bin",
+          -- }),
+          null_ls.builtins.formatting.prettier.with({
+              prefer_local = "node_modules/.bin",
+          }),
         },
+        debug= true,
         on_attach = function(client, bufnr)
           if client.supports_method('textDocument/formatting') then
             vim.keymap.set('n', '<Leader>f', function()
@@ -215,6 +219,10 @@ require('lazy').setup({
     cond = function()
       return vim.fn.executable 'make' == 1
     end,
+  },
+
+  {
+    'nvim-telescope/telescope-ui-select.nvim'
   },
 
   {
@@ -394,10 +402,17 @@ require('telescope').setup {
       },
     },
   },
+  extensions = {
+    ["ui-select"] = {
+      require("telescope.themes").get_dropdown {
+      }
+    }
+  }
 }
 
 -- Enable telescope fzf native, if installed
 pcall(require('telescope').load_extension, 'fzf')
+pcall(require("telescope").load_extension, 'ui-select')
 
 -- See `:help telescope.builtin`
 vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
@@ -495,7 +510,7 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 
 -- LSP settings.
 --  This function gets run when an LSP connects to a particular buffer.
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
   -- NOTE: Remember that lua is a real programming language, and as such it is possible
   -- to define small helper and utility functions so you don't have to repeat yourself
   -- many times.
@@ -510,8 +525,11 @@ local on_attach = function(_, bufnr)
     vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
   end
 
+  -- LSPサーバーのフォーマット機能を無効にする (Prettier によるフォーマットを利用)
+  client.resolved_capabilities.document_formatting = false
+
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-  nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+  -- nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
   nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
@@ -663,6 +681,7 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
 vim.keymap.set('n', '<C-n>', require('nvim-tree.api').tree.toggle, { desc = 'Toggle Tree' })
+vim.keymap.set('n', '<Leader>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', { desc = '[C]ode [A]ction' })
 
 -- Custom keymaps
 -- Replace ESC
