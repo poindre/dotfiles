@@ -1,5 +1,5 @@
 # alias vim='nvim $(fzf)'
-alias vim='~/my_local/nvim-macos/bin/nvim'
+alias vim='nvim'
 alias sed='gsed'
 
 alias rm='rm -i'

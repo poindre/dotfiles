@@ -103,19 +103,13 @@ require('lazy').setup({
 
       null_ls.setup({
         sources = {
-          -- eslint は重いので Mason の LSP 版を使用
-          -- null_ls.builtins.diagnostics.eslint.with({
-          --   prefer_local = "node_modules/.bin",
-          -- }),
-          null_ls.builtins.formatting.prettier.with({
-              prefer_local = "node_modules/.bin",
-          }),
+          null_ls.builtins.formatting.prettierd,
         },
-        debug= true,
+        debug= false,
         on_attach = function(client, bufnr)
           if client.supports_method('textDocument/formatting') then
             vim.keymap.set('n', '<Leader>f', function()
-              vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+              vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf(), timeout = 10000 })
             end, { buffer = bufnr, desc = '[lsp] format' })
 
             -- format on save
@@ -124,7 +118,14 @@ require('lazy').setup({
               buffer = bufnr,
               group = group,
               callback = function()
-                vim.lsp.buf.format({ bufnr = bufnr, async = async })
+                vim.lsp.buf.format({
+                  bufnr = bufnr,
+                  async = async,
+                  timeout = 10000,
+                  filter = function(_client)
+                    return _client.name == "null-ls"
+                  end
+                })
               end,
               desc = '[lsp] format on save',
             })
@@ -132,7 +133,7 @@ require('lazy').setup({
 
           if client.supports_method('textDocument/rangeFormatting') then
             vim.keymap.set('x', '<Leader>f', function()
-              vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf() })
+              vim.lsp.buf.format({ bufnr = vim.api.nvim_get_current_buf(), timeout = 10000  })
             end, { buffer = bufnr, desc = '[lsp] format' })
           end
         end,
@@ -258,6 +259,9 @@ require('lazy').setup({
       require('nvim-tree').setup({
         sort_by = 'case_sensitive',
         on_attach = tree_on_attach,
+        view = {
+          width = 50,
+        },
         filters = {
           custom = {'.DS_Store'}
         }
@@ -526,12 +530,12 @@ local on_attach = function(client, bufnr)
   end
 
   -- LSPサーバーのフォーマット機能を無効にする (Prettier によるフォーマットを利用)
-  client.resolved_capabilities.document_formatting = false
+  -- client.resolved_capabilities.document_formatting = true
 
   nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
   -- nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
-  nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+  -- nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
   nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
   nmap('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
   nmap('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
@@ -543,7 +547,7 @@ local on_attach = function(client, bufnr)
   nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
   -- Lesser used LSP functionality
-  nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+  -- nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
   nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
   nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
   nmap('<leader>wl', function()
@@ -561,7 +565,7 @@ require('prettier').setup({
     runtime_condition = function(params)
       return true
     end,
-    timeout = 5000,
+    timeout = 10000,
   },
   bin = 'prettier',
   filetypes = {
