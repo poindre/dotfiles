@@ -57,6 +57,8 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+-- config cspell 
+
 -- NOTE: Here is where you install your plugins.
 --  You can configure plugins using the `config` key.
 --
@@ -71,6 +73,26 @@ require('lazy').setup({
 
   -- Detect tabstop and shiftwidth automatically
   'tpope/vim-sleuth',
+
+  -- Github copilot
+  {
+    'github/copilot.vim',
+    config = function()
+      vim.g.copilot_no_tab_map = true
+      local keymap = vim.keymap.set
+      -- https://github.com/orgs/community/discussions/29817#discussioncomment-4217615
+      keymap(
+        "i",
+        "<C-g>",
+        'copilot#Accept("<CR>")',
+        { silent = true, expr = true, script = true, replace_keycodes = false }
+      )
+      keymap("i", "<C-.>", "<Plug>(copilot-next)")
+      keymap("i", "<C-,>", "<Plug>(copilot-previous)")
+      keymap("i", "<C-o>", "<Plug>(copilot-dismiss)")
+      keymap("i", "<C-s>", "<Plug>(copilot-suggest)")
+    end,
+  },
 
   -- NOTE: This is where your plugins related to LSP can be installed.
   --  The configuration is done below. Search for lspconfig to find it below.
@@ -97,6 +119,27 @@ require('lazy').setup({
     config = function()
       local null_ls = require('null-ls')
 
+      local cspell_config_dir = '~/.config/nvim/cspell'
+      local cspell_data_dir = '~/.local/share/cspell'
+      local cspell_files = {
+        config = vim.fn.expand(cspell_config_dir .. '/cspell.json'),
+        dotfiles = vim.fn.expand(cspell_config_dir .. '/dotfiles.txt'),
+        vim = vim.fn.expand(cspell_data_dir .. '/vim.txt.gz'),
+        user = vim.fn.expand(cspell_data_dir .. '/user.txt'),
+      }
+
+      -- vim辞書がなければダウンロード
+      if vim.fn.filereadable(cspell_files.vim) ~= 1 then
+        local vim_dictionary_url = 'https://github.com/iamcco/coc-spell-checker/raw/master/dicts/vim/vim.txt.gz'
+        io.popen('curl -fsSLo ' .. cspell_files.vim .. ' --create-dirs ' .. vim_dictionary_url)
+      end
+
+      -- ユーザー辞書がなければ作成
+      if vim.fn.filereadable(cspell_files.user) ~= 1 then
+        io.popen('mkdir -p ' .. cspell_data_dir)
+        io.popen('touch ' .. cspell_files.user)
+      end
+
       local group = vim.api.nvim_create_augroup('lsp_format_on_save', { clear = false })
       local event = { 'BufWritePre', 'BufWritePost' }
       local async = event == 'BufWritePost'
@@ -104,6 +147,23 @@ require('lazy').setup({
       null_ls.setup({
         sources = {
           null_ls.builtins.formatting.prettierd,
+          null_ls.builtins.diagnostics.eslint,
+          null_ls.builtins.diagnostics.cspell.with({
+            diagnostics_postprocess = function(diagnostic)
+              -- レベルをWARNに変更（デフォルトはERROR）
+              diagnostic.severity = vim.diagnostic.severity["WARN"]
+            end,
+            -- condition = function()
+              -- cspellが実行できるときのみ有効
+              -- return vim.fn.executable('cspell') > 0
+            -- end,
+            -- 起動時に設定ファイル読み込み
+            extra_args = { '--config', vim.fn.expand(cspell_files.config) },
+            disabled_filetypes = { "NvimTree" },
+            debounce = 2000,
+            -- 変更した箇所のみをチェックする
+            method = null_ls.methods.DIAGNOSTICS_ON_CHANGE
+          })
         },
         debug= false,
         on_attach = function(client, bufnr)
@@ -325,6 +385,9 @@ require('lazy').setup({
   --    An additional note is that if you only copied in the `init.lua`, you can just comment this line
   --    to get rid of the warning telling you that there are not plugins in `lua/custom/plugins/`.
   { import = 'custom.plugins' },
+  {
+    'mattn/emmet-vim'
+  },
 }, {})
 
 -- [[ Setting options ]]
