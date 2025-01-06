@@ -2,4 +2,13 @@
 --  I promise not to create any merge conflicts in this directory :)
 --
 -- See the kickstart.nvim README for more information
-return {}
+return {
+  {
+    'wuelnerdotexe/vim-astro',
+    ft = "astro",
+    init = function()
+      vim.g.astro_typescript = "enable"
+      vim.g.astro_stylus     = "disable"
+    end,
+  }
+}

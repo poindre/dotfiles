@@ -1,4 +1,4 @@
-export PATH=XDG_CONFIG_HOME=$HOME/.config:$PATH
+export XDG_CONFIG_HOME=$HOME/.config
 export DOCKER_CONTENT_TRUST=0
 
 # ------ #
