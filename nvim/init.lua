@@ -148,6 +148,12 @@ require('lazy').setup({
         sources = {
           null_ls.builtins.formatting.prettierd,
           null_ls.builtins.diagnostics.eslint,
+          -- null_ls.builtins.formatting.biome,
+          -- null_ls.builtins.formatting.stylelint.with({
+          --   condition = function()
+          --     return vim.fn.executable('stylelint') > 0
+          --   end
+          -- }),
           null_ls.builtins.diagnostics.cspell.with({
             diagnostics_postprocess = function(diagnostic)
               -- レベルをWARNに変更（デフォルトはERROR）
@@ -201,9 +207,17 @@ require('lazy').setup({
     end
   },
 
+  -- {
+  --   -- prettier.nvim
+  --   'MunifTanjim/prettier.nvim',
+  -- },
+
   {
-    -- prettier.nvim
-    'MunifTanjim/prettier.nvim',
+    "L3MON4D3/LuaSnip",
+    -- follow latest release.
+    version = "v2.*",
+    -- install jsregexp (optional!).
+    build = "make install_jsregexp"
   },
 
   {
@@ -255,12 +269,16 @@ require('lazy').setup({
   {
     -- Add indentation guides even on blank lines
     'lukas-reineke/indent-blankline.nvim',
+    main = "ibl",
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help indent_blankline.txt`
-    opts = {
-      char = '┊',
-      show_trailing_blankline_indent = false,
-    },
+    ---@module "ibl"
+    ---@type ibl.config
+    opts = {},
+    -- opts = {
+    --   char = '┊',
+    --   show_trailing_blankline_indent = false,
+    -- },
   },
 
   -- "gc" to comment visual regions/lines
@@ -504,7 +522,7 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim' },
+  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'css', 'vimdoc', 'vim' },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = false,
@@ -564,9 +582,9 @@ require('nvim-treesitter.configs').setup {
       },
     },
   },
-  autotag = {
-    enable = true,
-  },
+  -- autotag = {
+  --   enable = true,
+  -- },
 }
 
 -- Diagnostic keymaps
@@ -618,35 +636,36 @@ local on_attach = function(client, bufnr)
   end, '[W]orkspace [L]ist Folders')
 end
 
-require('prettier').setup({
-  ['null-ls'] = {
-    condition = function()
-      return require('prettier').config_exists({
-        check_package_json = true,
-      })
-    end,
-    runtime_condition = function(params)
-      return true
-    end,
-    timeout = 10000,
-  },
-  bin = 'prettier',
-  filetypes = {
-    'css',
-    'graphql',
-    'html',
-    'javascript',
-    'javascriptreact',
-    'json',
-    'less',
-    'markdown',
-    'scss',
-    'typescript',
-    'typescriptreact',
-    'yaml',
-    'lua',
-  },
-})
+-- require('prettier').setup({
+--   ['null-ls'] = {
+--     condition = function()
+--       return require('prettier').config_exists({
+--         check_package_json = true,
+--       })
+--     end,
+--     runtime_condition = function(params)
+--       return true
+--     end,
+--     timeout = 10000,
+--   },
+--   bin = 'prettier',
+--   filetypes = {
+--     'css',
+--     'graphql',
+--     'html',
+--     'javascript',
+--     'javascriptreact',
+--     'json',
+--     'less',
+--     'markdown',
+--     'scss',
+--     'typescript',
+--     'typescriptreact',
+--     'yaml',
+--     'lua',
+--     'ruby',
+--   },
+-- })
 
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
@@ -659,15 +678,76 @@ local servers = {
   -- pyright = {},
   -- rust_analyzer = {},
   intelephense = {},
-  tsserver = {},
   eslint = {},
   html = {},
+  ruby_ls = {},
   jsonls = {},
+  -- biome = {},
+
+  -- Vue 3        
+  volar = {
+    init_options = {
+      vue = {
+        hybridMode = false,
+      },
+    },
+    settings = {
+      typescript = {
+        inlayHints = {
+          enumMemberValues = {
+            enabled = true,
+          },
+          functionLikeReturnTypes = {
+            enabled = true,
+          },
+          propertyDeclarationTypes = {
+            enabled = true,
+          },
+          parameterTypes = {
+            enabled = true,
+            suppressWhenArgumentMatchesName = true,
+          },
+          variableTypes = {
+            enabled = true,
+          },
+        },
+      },
+    },
+  },
 
   lua_ls = {
     Lua = {
       workspace = { checkThirdParty = false },
       telemetry = { enable = false },
+    },
+  },
+  -- TypeScript
+  ts_ls = {
+    init_options = {
+      plugins = {
+        {
+          name = '@vue/typescript-plugin',
+          location = vim.fn.stdpath 'data' .. '/mason/packages/vue-language-server/node_modules/@vue/language-server',
+          languages = { 'vue' },
+        },
+      },
+    },
+    settings = {
+      typescript = {
+        tsserver = {
+          useSyntaxServer = false,
+        },
+        inlayHints = {
+          includeInlayParameterNameHints = 'all',
+          includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+          includeInlayFunctionParameterTypeHints = true,
+          includeInlayVariableTypeHints = true,
+          includeInlayVariableTypeHintsWhenTypeMatchesName = true,
+          includeInlayPropertyDeclarationTypeHints = true,
+          includeInlayFunctionLikeReturnTypeHints = true,
+          includeInlayEnumMemberValueHints = true,
+        },
+      },
     },
   },
 }
@@ -676,8 +756,8 @@ local servers = {
 require('neodev').setup()
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+-- local capabilities = vim.lsp.protocol.make_client_capabilities()
+-- capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 -- Ensure the servers above are installed
 local mason_lspconfig = require 'mason-lspconfig'
@@ -688,11 +768,16 @@ mason_lspconfig.setup {
 
 mason_lspconfig.setup_handlers {
   function(server_name)
-    require('lspconfig')[server_name].setup {
+    -- https://github.com/neovim/nvim-lspconfig/pull/3232#issuecomment-2331025714
+    if server_name == "tsserver" then
+      server_name = "ts_ls"
+    end
+    local capabilities = require("cmp_nvim_lsp").default_capabilities()
+    require("lspconfig")[server_name].setup({
       capabilities = capabilities,
       on_attach = on_attach,
       settings = servers[server_name],
-    }
+    })
   end,
 }
 
