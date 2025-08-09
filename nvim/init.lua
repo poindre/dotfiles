@@ -75,28 +75,47 @@ require('lazy').setup({
   'tpope/vim-sleuth',
 
   -- Github copilot
+  -- {
+  --   'github/copilot.vim',
+  --   config = function()
+  --     vim.g.copilot_no_tab_map = true
+  --     local keymap = vim.keymap.set
+  --     keymap(
+  --       "i",
+  --       "<C-g>",
+  --       'copilot#Accept("<CR>")',
+  --       { silent = true, expr = true, script = true, replace_keycodes = false }
+  --     )
+  --     keymap("i", "<C-.>", "<Plug>(copilot-next)")
+  --     keymap("i", "<C-,>", "<Plug>(copilot-previous)")
+  --     keymap("i", "<C-o>", "<Plug>(copilot-dismiss)")
+  --     keymap("i", "<C-s>", "<Plug>(copilot-suggest)")
+  --   end,
+  -- },
+
   {
-    'github/copilot.vim',
+    "zbirenbaum/copilot.lua",
+    cmd = "Copilot",
     config = function()
-      vim.g.copilot_no_tab_map = true
-      local keymap = vim.keymap.set
-      keymap(
-        "i",
-        "<C-g>",
-        'copilot#Accept("<CR>")',
-        { silent = true, expr = true, script = true, replace_keycodes = false }
-      )
-      keymap("i", "<C-.>", "<Plug>(copilot-next)")
-      keymap("i", "<C-,>", "<Plug>(copilot-previous)")
-      keymap("i", "<C-o>", "<Plug>(copilot-dismiss)")
-      keymap("i", "<C-s>", "<Plug>(copilot-suggest)")
+      require("copilot").setup({
+        suggestion = {
+          enabled = true,
+          auto_trigger = true,
+          keymap = {
+            accept = "<C-g>",
+          },
+        },
+        panel = {
+          enabled = true,
+        },
+      })
     end,
   },
 
   {
     "CopilotC-Nvim/CopilotChat.nvim",
     dependencies = {
-      { "gtihub/copilot.lua" }, -- or github/copilot.vim
+      { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
       { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
     },
     build = "make tiktoken", -- Only on MacOS or Linux
@@ -226,6 +245,8 @@ require('lazy').setup({
           --     return vim.fn.executable('stylelint') > 0
           --   end
           -- }),
+          null_ls.builtins.diagnostics.stylelint,
+          null_ls.builtins.formatting.stylelint,
           null_ls.builtins.diagnostics.cspell.with({
             diagnostics_postprocess = function(diagnostic)
               -- レベルをWARNに変更（デフォルトはERROR）
@@ -644,15 +665,15 @@ require('nvim-treesitter.configs').setup {
         ['[]'] = '@class.outer',
       },
     },
-    swap = {
-      enable = true,
-      swap_next = {
-        ['<leader>a'] = '@parameter.inner',
-      },
-      swap_previous = {
-        ['<leader>A'] = '@parameter.inner',
-      },
-    },
+    -- swap = {
+    --   enable = true,
+    --   swap_next = {
+    --     ['<leader>a'] = '@parameter.inner',
+    --   },
+    --   swap_previous = {
+    --     ['<leader>A'] = '@parameter.inner',
+    --   },
+    -- },
   },
   -- autotag = {
   --   enable = true,
@@ -749,7 +770,7 @@ local servers = {
   -- gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
-  intelephense = {},
+  -- intelephense = {},
   eslint = {},
   html = {},
   ruby_ls = {},
@@ -757,35 +778,35 @@ local servers = {
   -- biome = {},
 
   -- Vue 3        
-  volar = {
-    init_options = {
-      vue = {
-        hybridMode = false,
-      },
-    },
-    settings = {
-      typescript = {
-        inlayHints = {
-          enumMemberValues = {
-            enabled = true,
-          },
-          functionLikeReturnTypes = {
-            enabled = true,
-          },
-          propertyDeclarationTypes = {
-            enabled = true,
-          },
-          parameterTypes = {
-            enabled = true,
-            suppressWhenArgumentMatchesName = true,
-          },
-          variableTypes = {
-            enabled = true,
-          },
-        },
-      },
-    },
-  },
+  -- volar = {
+  --   init_options = {
+  --     vue = {
+  --       hybridMode = false,
+  --     },
+  --   },
+  --   settings = {
+  --     typescript = {
+  --       inlayHints = {
+  --         enumMemberValues = {
+  --           enabled = true,
+  --         },
+  --         functionLikeReturnTypes = {
+  --           enabled = true,
+  --         },
+  --         propertyDeclarationTypes = {
+  --           enabled = true,
+  --         },
+  --         parameterTypes = {
+  --           enabled = true,
+  --           suppressWhenArgumentMatchesName = true,
+  --         },
+  --         variableTypes = {
+  --           enabled = true,
+  --         },
+  --       },
+  --     },
+  --   },
+  -- },
 
   lua_ls = {
     Lua = {
