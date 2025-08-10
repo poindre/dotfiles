@@ -1,10 +1,10 @@
 export XDG_CONFIG_HOME=$HOME/.config
 export DOCKER_CONTENT_TRUST=0
 
-# ------ #
-# Anyenv #
-# ------ #
-export PATH=$HOME/.anyenv/bin:$PATH
+# ---- #
+# asdf #
+# ---- #
+export PATH="${$HOME/.asdf}/shims:$PATH"
 
 # ---------------- #
 # Settings for fzf #
