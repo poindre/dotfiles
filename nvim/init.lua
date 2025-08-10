@@ -116,7 +116,7 @@ require('lazy').setup({
     "CopilotC-Nvim/CopilotChat.nvim",
     dependencies = {
       { "zbirenbaum/copilot.lua" }, -- or github/copilot.vim
-      { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
+      { "nvim-lua/plenary.nvim", branch = "master" }, -- for curl, log wrapper
     },
     build = "make tiktoken", -- Only on MacOS or Linux
     opts = {
@@ -125,6 +125,9 @@ require('lazy').setup({
     },
     config = function ()
       require("CopilotChat").setup({
+        model = "claude-3.7-sonnet",
+        context = "buffer",
+        system_prompt = "コメントは日本語でお願いします",
         show_help = "yes",
         prompts = {
           Explain = {
@@ -197,7 +200,7 @@ require('lazy').setup({
 
       -- Useful status updates for LSP
       -- NOTE: `opts = {}` is the same as calling `require('fidget').setup({})`
-      { 'j-hui/fidget.nvim',       opts = {} },
+      { 'j-hui/fidget.nvim', opts = {} },
 
       -- Additional lua configuration, makes nvim stuff amazing!
       'folke/neodev.nvim',
@@ -206,7 +209,8 @@ require('lazy').setup({
 
   {
     -- plugins/null-ls.lua
-    'jose-elias-alvarez/null-ls.nvim',
+    'nvimtools/none-ls.nvim',
+    dependencies = "nvim-lua/plenary.nvim",
     config = function()
       local null_ls = require('null-ls')
 
@@ -232,19 +236,38 @@ require('lazy').setup({
       end
 
       local group = vim.api.nvim_create_augroup('lsp_format_on_save', { clear = false })
-      local event = { 'BufWritePre', 'BufWritePost' }
-      local async = event == 'BufWritePost'
+      local event = 'BufWritePre'
+      local async = false
 
       null_ls.setup({
         sources = {
-          null_ls.builtins.formatting.prettierd,
-          null_ls.builtins.diagnostics.eslint,
+          null_ls.builtins.formatting.prettier,
+          null_ls.builtins.diagnostics.rubocop.with({
+            command = "bundle",
+            args = vim.fn.executable("bundle") == 1 and
+              { "exec", "rucocop", "--format", "json", "--force-exclusion", "--stdin", "$FILENAME" } or
+              nil,
+            cwd = function()
+              return vim.fn.getcwd()
+            end,
+          }),
+          null_ls.builtins.formatting.rubocop.with({
+            command = "bundle",
+            args = vim.fn.executable("bundle") == 1 and
+              { "exec", "rucocop", "--auto-correct", "--stdin", "$FILENAME", "--stdout" } or
+              nil,
+            cwd = function()
+              return vim.fn.getcwd()
+            end,
+          }),
           -- null_ls.builtins.formatting.biome,
           -- null_ls.builtins.formatting.stylelint.with({
           --   condition = function()
           --     return vim.fn.executable('stylelint') > 0
           --   end
           -- }),
+          null_ls.builtins.diagnostics.eslint,
+          null_ls.builtins.formatting.eslint,
           null_ls.builtins.diagnostics.stylelint,
           null_ls.builtins.formatting.stylelint,
           null_ls.builtins.diagnostics.cspell.with({
@@ -316,11 +339,18 @@ require('lazy').setup({
   {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
-    dependencies = { 'hrsh7th/cmp-nvim-lsp', 'L3MON4D3/LuaSnip', 'saadparwaiz1/cmp_luasnip' },
+    dependencies = {
+      'hrsh7th/cmp-nvim-lsp',
+      'L3MON4D3/LuaSnip',
+      -- 'saadparwaiz1/cmp_luasnip'
+    },
   },
 
   -- Useful plugin to show you pending keybinds.
-  { 'folke/which-key.nvim',          opts = {} },
+  { 'folke/which-key.nvim', 
+    opts = {}
+  },
+
   {
     -- Adds git releated signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
@@ -336,13 +366,24 @@ require('lazy').setup({
     },
   },
 
+  -- {
+  --   -- Theme inspired by Atom
+  --   'navarasu/onedark.nvim',
+  --   priority = 1000,
+  --   config = function()
+  --     vim.cmd.colorscheme 'onedark'
+  --   end,
+  -- },
+
   {
-    -- Theme inspired by Atom
-    'navarasu/onedark.nvim',
+    "sainnhe/everforest",
+    lazy = false,
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme 'onedark'
-    end,
+      vim.g.everforest_enable_italic = true
+      vim.g.everforest_background = "soft"
+      vim.cmd.colorscheme("everforest")
+    end
   },
 
   {
@@ -375,10 +416,17 @@ require('lazy').setup({
   },
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim',         opts = {} },
+  {
+    'numToStr/Comment.nvim', 
+    opts = {}
+  },
 
   -- Fuzzy Finder (files, lsp, etc)
-  { 'nvim-telescope/telescope.nvim', version = '*', dependencies = { 'nvim-lua/plenary.nvim' } },
+  {
+    'nvim-telescope/telescope.nvim',
+    version = '*',
+    dependencies = { 'nvim-lua/plenary.nvim' }
+  },
 
   -- Fuzzy Finder Algorithm which requires local dependencies to be built.
   -- Only load if `make` is available. Make sure you have the system
@@ -404,6 +452,11 @@ require('lazy').setup({
       'nvim-treesitter/nvim-treesitter-textobjects',
     },
     build = ':TSUpdate',
+  },
+
+  {
+    "slim-template/vim-slim",
+    ft = "slim"
   },
 
   {
@@ -481,6 +534,10 @@ require('lazy').setup({
     },
   },
 
+  {
+    'mattn/emmet-vim'
+  },
+
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -496,9 +553,6 @@ require('lazy').setup({
   --    An additional note is that if you only copied in the `init.lua`, you can just comment this line
   --    to get rid of the warning telling you that there are not plugins in `lua/custom/plugins/`.
   { import = 'custom.plugins' },
-  {
-    'mattn/emmet-vim'
-  },
 }, {})
 
 -- [[ Setting options ]]
@@ -615,11 +669,14 @@ vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { de
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'css', 'vimdoc', 'vim' },
+  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'css', 'vimdoc', 'vim', 'vue', 'ruby', 'slim' },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
-  auto_install = false,
+  -- auto_install = false,
 
+  endwise = {
+    enable = true
+  },
   highlight = { enable = true },
   indent = { enable = true, disable = { 'python' } },
   incremental_selection = {
@@ -665,15 +722,15 @@ require('nvim-treesitter.configs').setup {
         ['[]'] = '@class.outer',
       },
     },
-    -- swap = {
-    --   enable = true,
-    --   swap_next = {
-    --     ['<leader>a'] = '@parameter.inner',
-    --   },
-    --   swap_previous = {
-    --     ['<leader>A'] = '@parameter.inner',
-    --   },
-    -- },
+    swap = {
+      enable = true,
+      swap_next = {
+        ['<leader>a'] = '@parameter.inner',
+      },
+      swap_previous = {
+        ['<leader>A'] = '@parameter.inner',
+      },
+    },
   },
   -- autotag = {
   --   enable = true,
@@ -729,37 +786,6 @@ local on_attach = function(client, bufnr)
   end, '[W]orkspace [L]ist Folders')
 end
 
--- require('prettier').setup({
---   ['null-ls'] = {
---     condition = function()
---       return require('prettier').config_exists({
---         check_package_json = true,
---       })
---     end,
---     runtime_condition = function(params)
---       return true
---     end,
---     timeout = 10000,
---   },
---   bin = 'prettier',
---   filetypes = {
---     'css',
---     'graphql',
---     'html',
---     'javascript',
---     'javascriptreact',
---     'json',
---     'less',
---     'markdown',
---     'scss',
---     'typescript',
---     'typescriptreact',
---     'yaml',
---     'lua',
---     'ruby',
---   },
--- })
-
 -- Enable the following language servers
 --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
 --
@@ -770,11 +796,11 @@ local servers = {
   -- gopls = {},
   -- pyright = {},
   -- rust_analyzer = {},
-  -- intelephense = {},
-  eslint = {},
+  intelephense = {},
+  -- eslint = {},
   html = {},
-  ruby_ls = {},
   jsonls = {},
+  solargraph = {},
   -- biome = {},
 
   -- Vue 3        
@@ -815,63 +841,53 @@ local servers = {
     },
   },
   -- TypeScript
-  ts_ls = {
-    init_options = {
-      plugins = {
-        {
-          name = '@vue/typescript-plugin',
-          location = vim.fn.stdpath 'data' .. '/mason/packages/vue-language-server/node_modules/@vue/language-server',
-          languages = { 'vue' },
-        },
-      },
-    },
-    settings = {
-      typescript = {
-        tsserver = {
-          useSyntaxServer = false,
-        },
-        inlayHints = {
-          includeInlayParameterNameHints = 'all',
-          includeInlayParameterNameHintsWhenArgumentMatchesName = true,
-          includeInlayFunctionParameterTypeHints = true,
-          includeInlayVariableTypeHints = true,
-          includeInlayVariableTypeHintsWhenTypeMatchesName = true,
-          includeInlayPropertyDeclarationTypeHints = true,
-          includeInlayFunctionLikeReturnTypeHints = true,
-          includeInlayEnumMemberValueHints = true,
-        },
-      },
-    },
-  },
+  ts_ls = {},
 }
 
 -- Setup neovim lua configuration
 require('neodev').setup()
 
 -- nvim-cmp supports additional completion capabilities, so broadcast that to servers
--- local capabilities = vim.lsp.protocol.make_client_capabilities()
+local capabilities = vim.lsp.protocol.make_client_capabilities()
 -- capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 
 -- Ensure the servers above are installed
 local mason_lspconfig = require 'mason-lspconfig'
+local lspconfig = require 'lspconfig'
 
 mason_lspconfig.setup {
   ensure_installed = vim.tbl_keys(servers),
-}
+  handlers = {
+    function(server_name)
+      -- https://github.com/neovim/nvim-lspconfig/pull/3232#issuecomment-2331025714
+      lspconfig[server_name].setup({
+        capabilities = capabilities,
+        on_attach = on_attach,
+        settings = servers[server_name],
+      })
+    end,
+    ['ts_ls'] = function()
+      local vue_typescript_plugin = require("maon-registry").get_package("vue-language-server").get_install_path() .. "/node_modules/@vue/language-server/node_modules/@vue/typescript-plugin"
 
-mason_lspconfig.setup_handlers {
-  function(server_name)
-    -- https://github.com/neovim/nvim-lspconfig/pull/3232#issuecomment-2331025714
-    if server_name == "tsserver" then
-      server_name = "ts_ls"
+      lspconfig.ts_ls.setup({
+        on_attach = on_attach,
+        filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue"},
+        init_options = {
+          preferences = {
+            importModuleSpecifierPrederence = "relative"
+          },
+          root_dir = lspconfig.util.root_pattern("package.json"),
+          plugins = {
+            {
+              name = "@vue/typescript-plugin",
+              location = vue_typescript_plugin,
+              languages = { "javascript", "typescript", "vue" }
+            }
+          }
+        }
+      })
     end
-    local capabilities = require("cmp_nvim_lsp").default_capabilities()
-    require("lspconfig")[server_name].setup({
-      capabilities = capabilities,
-      on_attach = on_attach,
-      settings = servers[server_name],
-    })
-  end,
+  }
 }
 
 -- nvim-cmp setup
