@@ -270,22 +270,22 @@ require('lazy').setup({
           null_ls.builtins.formatting.eslint,
           null_ls.builtins.diagnostics.stylelint,
           null_ls.builtins.formatting.stylelint,
-          null_ls.builtins.diagnostics.cspell.with({
-            diagnostics_postprocess = function(diagnostic)
-              -- レベルをWARNに変更（デフォルトはERROR）
-              diagnostic.severity = vim.diagnostic.severity["WARN"]
-            end,
-            -- condition = function()
-              -- cspellが実行できるときのみ有効
-              -- return vim.fn.executable('cspell') > 0
-            -- end,
-            -- 起動時に設定ファイル読み込み
-            extra_args = { '--config', vim.fn.expand(cspell_files.config) },
-            disabled_filetypes = { "NvimTree" },
-            debounce = 2000,
-            -- 変更した箇所のみをチェックする
-            method = null_ls.methods.DIAGNOSTICS_ON_CHANGE
-          })
+          -- null_ls.builtins.diagnostics.cspell.with({
+          --   diagnostics_postprocess = function(diagnostic)
+          --     -- レベルをWARNに変更（デフォルトはERROR）
+          --     diagnostic.severity = vim.diagnostic.severity["WARN"]
+          --   end,
+          --   -- condition = function()
+          --     -- cspellが実行できるときのみ有効
+          --     -- return vim.fn.executable('cspell') > 0
+          --   -- end,
+          --   -- 起動時に設定ファイル読み込み
+          --   extra_args = { '--config', vim.fn.expand(cspell_files.config) },
+          --   disabled_filetypes = { "NvimTree" },
+          --   debounce = 2000,
+          --   -- 変更した箇所のみをチェックする
+          --   method = null_ls.methods.DIAGNOSTICS_ON_CHANGE
+          -- })
         },
         debug= false,
         on_attach = function(client, bufnr)
@@ -381,10 +381,22 @@ require('lazy').setup({
     priority = 1000,
     config = function()
       vim.g.everforest_enable_italic = true
-      vim.g.everforest_background = "soft"
-      vim.cmd.colorscheme("everforest")
+      vim.g.everforest_background = "hard"
+      vim.g.everforest_better_performance = 1
+      vim.cmd('colorscheme everforest')
     end
   },
+
+  -- {
+  --   "catppuccin/nvim",
+  --   name = "catppuccin",
+  --   priority = 1000,
+  --   config = function()
+  --     require("catppuccin").setup({
+  --       flavour = "mocha",
+  --     })
+  --   end
+  -- },
 
   {
     -- Set lualine as statusline

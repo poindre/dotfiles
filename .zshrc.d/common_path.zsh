@@ -4,7 +4,7 @@ export DOCKER_CONTENT_TRUST=0
 # ---- #
 # asdf #
 # ---- #
-export PATH="${$HOME/.asdf}/shims:$PATH"
+export PATH="${~/.asdf}/shims:$PATH"
 
 # ---------------- #
 # Settings for fzf #
